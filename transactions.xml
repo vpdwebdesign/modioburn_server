@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transactions>
+    <transaction>
+        <number>01</number>
+        <thumb>qrc:/assets/profiles/customer1.jpg</thumb>
+        <customerID>Vinnie</customerID>
+        <description>3 movies</description>
+        <cost>150.00</cost>
+        <time>09:38</time>
+        <action>Burn DVD</action>
+    </transaction>
+
+    <transaction>
+        <number>02</number>
+        <thumb>qrc:/assets/profiles/customer2.jpg</thumb>
+        <customerID>Janet Machuka</customerID>
+        <description>10 songs</description>
+        <cost>50.00</cost>
+        <time>09:42</time>
+        <action>Burn CD</action>
+    </transaction>
+
+    <transaction>
+        <number>03</number>
+        <thumb>qrc:/assets/profiles/user.png</thumb>
+        <customerID>0733567898</customerID>
+        <description>5 movies</description>
+        <cost>250.00</cost>
+        <time>10:01</time>
+        <action>Burn DVD</action>
+    </transaction>
+
+    <transaction>
+        <number>04</number>
+        <thumb>qrc:/assets/profiles/customer3.jpg</thumb>
+        <customerID>Ben Carson</customerID>
+        <description>2 music albums</description>
+        <cost>100.00</cost>
+        <time>10:03</time>
+        <action>Copy to disk</action>
+    </transaction>
+
+    <transaction>
+        <number>05</number>
+        <thumb>qrc:/assets/profiles/customer4.jpg</thumb>
+        <customerID>Norman</customerID>
+        <description>10 movies</description>
+        <cost>500.00</cost>
+        <time>10:04</time>
+        <action>Copy to disk</action>
+    </transaction>
+
+    <transaction>
+        <number>06</number>
+        <thumb>qrc:/assets/profiles/user.png</thumb>
+        <customerID>Anonymous</customerID>
+        <description>6 movies</description>
+        <cost>300.00</cost>
+        <time>10:06</time>
+        <action>Copy to disk</action>
+    </transaction>
+
+    <transaction>
+        <number>07</number>
+        <thumb>qrc:/assets/profiles/customer5.jpg</thumb>
+        <customerID>Gloria P</customerID>
+        <description>4 music albums</description>
+        <cost>200.00</cost>
+        <time>10:06</time>
+        <action>Burn CD</action>
+    </transaction>
+
+    <transaction>
+        <number>08</number>
+        <thumb>qrc:/assets/profiles/customer6.jpg</thumb>
+        <customerID>Victor</customerID>
+        <description>50 music videos</description>
+        <cost>500.00</cost>
+        <time>10:08</time>
+        <action>Burn DVD</action>
+    </transaction>
+
+    <transaction>
+        <number>09</number>
+        <thumb>qrc:/assets/profiles/customer7.jpg</thumb>
+        <customerID>Bosco Kalulu</customerID>
+        <description>40 songs</description>
+        <cost>200.00</cost>
+        <time>10:10</time>
+        <action>Burn CD</action>
+    </transaction>
+
+    <transaction>
+        <number>10</number>
+        <thumb>qrc:/assets/profiles/customer8.jpg</thumb>
+        <customerID>Kepher Luhombo</customerID>
+        <description>11 movies</description>
+        <cost>550.00</cost>
+        <time>10:18</time>
+        <action>Copy to Disk</action>
+    </transaction>
+
+    <transaction>
+        <number>11</number>
+        <thumb>qrc:/assets/profiles/user.png</thumb>
+        <customerID>Anonymous</customerID>
+        <description>3 series</description>
+        <cost>150.00</cost>
+        <time>10:19</time>
+        <action>Copy to Disk</action>
+    </transaction>
+
+    <transaction>
+        <number>12</number>
+        <thumb>qrc:/assets/profiles/user.png</thumb>
+        <customerID>0724367890</customerID>
+        <description>10 movies</description>
+        <cost>1000.00</cost>
+        <time>10:21</time>
+        <action>Burn DVD</action>
+    </transaction>
+
+    <transaction>
+        <number>13</number>
+        <thumb>qrc:/assets/profiles/customer9.jpg</thumb>
+        <customerID>Mzee Maigwa</customerID>
+        <description>10 music videos</description>
+        <cost>100.00</cost>
+        <time>11:00</time>
+        <action>Copy to Disk</action>
+    </transaction>
+
+    <transaction>
+        <number>14</number>
+        <thumb>qrc:/assets/profiles/customer10.jpg</thumb>
+        <customerID>Josephat Kariz</customerID>
+        <description>3 music albums</description>
+        <cost>150.00</cost>
+        <time>11:02</time>
+        <action>Burn CD</action>
+    </transaction>
+
+    <transaction>
+        <number>15</number>
+        <thumb>qrc:/assets/profiles/customer11.jpg</thumb>
+        <customerID>Kazungu K</customerID>
+        <description>4 movies</description>
+        <cost>200.00</cost>
+        <time>11:09</time>
+        <action>Burn DVD</action>
+    </transaction>
+</transactions>
