@@ -1,7 +1,9 @@
 #include "personnelmanagementmodel.h"
+#include <QSqlQuery>
+#include <QSqlRecord>
 
 PersonnelManagementModel::PersonnelManagementModel(QObject *parent)
-    : QSqlTableModel(parent)
+    : QSqlQueryModel(parent)
 {
 }
 
@@ -10,24 +12,33 @@ QVariant PersonnelManagementModel::data(const QModelIndex &index, int role) cons
     if (!index.isValid())
         return QVariant();
 
-    // FIXME: Implement me!
+    if (index.isValid())
+    {
+        QVariant value;
+        if (role < Qt::UserRole) {
+            value = QSqlQueryModel::data(index, role);
+        } else {
+            int columnIdx = role - Qt::UserRole;
+            QModelIndex modelIndex = this->index(index.row(), columnIdx);
+            value = QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
+        }
+
+        return value;
+    }
+
     return QVariant();
 }
 
-bool PersonnelManagementModel::setData(const QModelIndex &index, const QVariant &value, int role)
+QHash<int, QByteArray> PersonnelManagementModel::roleNames() const
 {
-    if (data(index, role) != value) {
-        // FIXME: Implement me!
-        emit dataChanged(index, index, QVector<int>() << role);
-        return true;
-    }
-    return false;
+    return m_rNames;
 }
 
-Qt::ItemFlags PersonnelManagementModel::flags(const QModelIndex &index) const
+void PersonnelManagementModel::generateRoleNames()
 {
-    if (!index.isValid())
-        return Qt::NoItemFlags;
-
-    return Qt::ItemIsEditable; // FIXME: Implement me!
+    m_rNames.clear();
+    for (int i = 0; i < this->record().count(); ++i)
+    {
+        m_rNames.insert(Qt::UserRole + i, this->record().fieldName(i).toUtf8());
+    }
 }

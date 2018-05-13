@@ -1,9 +1,9 @@
 #ifndef PERSONNELMANAGEMENTMODEL_H
 #define PERSONNELMANAGEMENTMODEL_H
 
-#include <QSqlTableModel>
+#include <QSqlQueryModel>
 
-class PersonnelManagementModel : public QSqlTableModel
+class PersonnelManagementModel : public QSqlQueryModel
 {
     Q_OBJECT
 
@@ -11,13 +11,12 @@ public:
     explicit PersonnelManagementModel(QObject *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
-    // Editable:
-    bool setData(const QModelIndex &index, const QVariant &value,
-                 int role = Qt::EditRole) override;
+    void generateRoleNames();
 
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
-
+private:
+    QHash<int, QByteArray> m_rNames;
 };
 
 #endif // PERSONNELMANAGEMENTMODEL_H

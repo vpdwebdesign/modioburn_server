@@ -26,10 +26,6 @@ ApplicationWindow {
         id: userManager
     }
 
-    ParentModel {
-        id: parentModel
-    }
-
     StockItemsPurchasesModel {
         id: stockItemsPurchasesModel
         list: stockItemsPurchasesList

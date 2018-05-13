@@ -48,11 +48,7 @@ public:
     Q_INVOKABLE bool userExists(const QString &username);
     Q_INVOKABLE bool phoneTaken(const QString &phone);
     Q_INVOKABLE bool emailTaken(const QString &email);
-    Q_INVOKABLE bool addUser();
-    Q_INVOKABLE bool updateUser();
     Q_INVOKABLE bool getUser(const QString &username);
-    Q_INVOKABLE bool deleteUser(const QString &username);
-    Q_INVOKABLE bool resetPassword(const QString &username, const QString &pass);
     Q_INVOKABLE bool verifyPhone(const QString &username, const QString &phone);
 
 signals:
@@ -65,9 +61,17 @@ signals:
     void statusChanged(const QString &s);
 
     void authenticated(const QString username);
+    void userAdded();
+    void userUpdated();
+    void userDeleted();
+    void passwordReset();
 
 public slots:
     bool authenticate(const QString &username, const QString &pass);
+    bool addUser();
+    bool updateUser();
+    bool deleteUser(const QString &username);
+    bool resetPassword(const QString &username, const QString &pass);
 
 private:
     int m_userId;

@@ -21,3 +21,15 @@ function capitalize(token)
 
     return newString;
 }
+
+function capitalizeAny(stringToSplit, separator)
+{
+    var arrayOfWords = stringToSplit.split(separator);
+    var tempString = '';
+    for (var i = 0; i < arrayOfWords.length; ++i)
+    {
+        tempString += (capitalize(arrayOfWords[i]) + ' ')
+    }
+
+    return tempString;
+}

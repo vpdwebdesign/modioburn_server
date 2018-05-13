@@ -22,7 +22,8 @@ HEADERS += \
     stockitem.h \
     stockitemspurchaseslist.h \
     stockitemspurchasesmodel.h \
-    personnelmanagementmodel.h
+    personnelmanagementmodel.h \
+    personnelmanagementproxymodel.h
 
 SOURCES += \
     main.cpp \
@@ -43,7 +44,8 @@ SOURCES += \
     stockitemsmodel.cpp \
     stockitemspurchaseslist.cpp \
     stockitemspurchasesmodel.cpp \
-    personnelmanagementmodel.cpp
+    personnelmanagementmodel.cpp \
+    personnelmanagementproxymodel.cpp
 
 RESOURCES += \
     qml.qrc \

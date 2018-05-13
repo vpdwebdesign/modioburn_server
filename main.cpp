@@ -14,10 +14,10 @@
 #include "mbtimer.h"
 #include "phonecodeverifier.h"
 #include "rbacusermanager.h"
+#include "personnelmanagementproxymodel.h"
 #include "transactionsmodel.h"
 #include "shoppingcart.h"
 #include "transactionsquerymodel.h"
-//#include "stockitemsproxymodel.h"
 #include "stockitemsmodel.h"
 #include "stockitemspurchasesmodel.h"
 #include "stockitemspurchaseslist.h"
@@ -77,8 +77,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<PhoneCodeVerifier>("ModioBurn.Tools", 1, 0, "PhoneCodeVerifier");
     qmlRegisterType<RBACUserManager>("ModioBurn.Tools", 1, 0, "UserManager");
     qmlRegisterType<MbProxyQueryModel>("ModioBurn.Tools", 1, 0, "ParentModel");
+    qmlRegisterType<PersonnelManagementProxyModel>("ModioBurn.Tools", 1, 0, "PersonnelModel");
     qmlRegisterType<TransactionsModel>("ModioBurn.Tools", 1, 0, "TransactionsModel");
     qmlRegisterType<StockItemsPurchasesModel>("ModioBurn.Tools", 1, 0, "StockItemsPurchasesModel");
+
     qmlRegisterUncreatableType<Session>("ModioBurn.Tools", 1, 0, "Session",
                                              QStringLiteral("Session should not be created in QML"));
     qmlRegisterUncreatableType<ShoppingCart>("ModioBurn.Tools", 1, 0, "ShoppingCart",
@@ -93,7 +95,6 @@ int main(int argc, char *argv[])
                                              QStringLiteral("StockItemsPurchasesList should not be created in QML"));
     qmlRegisterUncreatableType<StockItemsModel>("ModioBurn.Tools", 1, 0, "StockItemsModel",
                                              QStringLiteral("StockItemsModel should not be created in QML"));
-
 
     // Add context properties here
     engine.rootContext()->setContextProperty(QStringLiteral("PlayerConfig"), &Config::instance());

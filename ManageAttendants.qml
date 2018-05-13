@@ -2,23 +2,30 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.3
-import QtQuick.XmlListModel 2.0
+import ModioBurn.Tools 1.0
 
 import "Common"
 import "Common/Dialogs"
+import "Common/JS/functions.js" as Js
 
 Pane {
 
-    property string pageTitle: qsTr("Manage Attendants")
+    property string pageTitle: "Manage Attendants"
 
-    property int delegateHeight: 90
-    property int attendantsListRectangleWidth: 170
+    property int delegateHeight: 70
+    property int attendantsListRectangleWidth: 120
     property int attendantsListRectangleHeight: delegateHeight
-    property int datesRectangleWidth: Math.round(attendantsListRectangleWidth / 1.4)
+    property int attendantsListRectLeftMargin: 5
     property string attendantsListRectangleColor: "transparent"
     property real attendantsListRectangleOpacity: 1.0
+    property int attendantsListFontSize: 13
 
-    property int attendantsListFontSize: 16
+    property bool showSuspended: false
+    property bool showDeregistered: false
+
+    PersonnelModel {
+        id: personnelModelAttendants
+    }
 
     RowLayout {
         id: searchBarRow
@@ -28,8 +35,10 @@ Pane {
         Button {
             id: addPersonButton
             anchors.left: parent.left
-            anchors.leftMargin: 20
             text: "Add"
+            onClicked: {
+                mainView.push("PersonnelRegistration.qml", {"newRole" : "attendant"})
+            }
 
             ToolTip {
                 visible: parent.hovered
@@ -40,15 +49,54 @@ Pane {
         SearchBar {
             id: search
             Layout.fillWidth: true
-            placeHolder: qsTr("Attendant name, employment date, etc")
+            placeHolder: qsTr("Attendant name, phone, status")
+            fuzzySearchEnabled: true
+            onSearchActivated: {
+               personnelModelAttendants.filter(PersonnelModel.Attendant, searchString)
+            }
+
         }
 
-        SortPersons {
+        RowLayout {
             anchors.right: parent.right
             anchors.rightMargin: 20
-            comboBoxWidth: 170
-            optionsList: ["In Employment", "Suspended", "Dismissed"]
+            height: parent.height
+            spacing: 20
 
+            Label {
+                text: "View"
+            }
+
+            ComboBox {
+                id: statusComboBox
+                implicitWidth: 170
+                model: ["Active", "Suspended", "Deleted"]
+                onActivated: {
+                    if (statusComboBox.currentText.toLowerCase() === "suspended")
+                    {
+                        showSuspended = true
+                        sortBarPersons.showSuspended = showSuspended
+                        showDeregistered = false
+                        sortBarPersons.showDeregistered = showDeregistered
+                    }
+                    else if (statusComboBox.currentText.toLowerCase() === "deleted")
+                    {
+                        showDeregistered = true
+                        sortBarPersons.showDeregistered = showDeregistered
+                        showSuspended = false
+                        sortBarPersons.showSuspended = showSuspended
+                    }
+                    else
+                    {
+                        showSuspended = false
+                        sortBarPersons.showSuspended = showSuspended
+                        showDeregistered = false
+                        sortBarPersons.showDeregistered = showDeregistered
+                    }
+
+                    personnelModelAttendants.filter(PersonnelModel.Attendant, statusComboBox.currentText.toLowerCase())
+                }
+            }
         }
 
     }
@@ -58,6 +106,10 @@ Pane {
         height: 30
         anchors.top: searchBarRow.bottom
         SortBarPersons {
+            id: sortBarPersons
+            onSortActivated: {
+                personnelModelAttendants.sort(PersonnelModel.Attendant, col, sortOrder)
+            }
         }
 
     }
@@ -70,37 +122,14 @@ Pane {
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        model: attendantsListModel
+        model: personnelModelAttendants.attendantsModel
         delegate: attendantsListDelegate
-        ScrollBar.vertical: ScrollBar {
-            id: attendantsListScrollbar
-            active: true
-            contentItem: Rectangle {
-                width: 8
-                radius: 4
-                color: attendantsListScrollbar.pressed ? "#b61616" : "#ea5354"
-            }
+        ScrollBar.vertical: ScrollBar {}
+
+        Component.onCompleted: {
+            personnelModelAttendants.filter(PersonnelModel.Attendant, statusComboBox.currentText.toLowerCase())
         }
     }
-
-    ListModel {
-        id: attendantsListModel
-
-        ListElement {
-            profilePicSource: "qrc:/assets/profiles/customer2.jpg"
-            name: "Esther Njeri"
-            gender: "F"
-            doe: "5th Aug 2017"
-        }
-
-        ListElement {
-            profilePicSource: "qrc:/assets/profiles/customer1.jpg"
-            name: "Hamisi Juma"
-            gender: "M"
-            doe: "5th Sep 2017"
-        }
-    }
-
 
     Component {
         id: attendantsListDelegate
@@ -112,84 +141,45 @@ Pane {
             RowLayout {
                 id: attendantsListDataRow
                 width: parent.width
-                height: parent.height - 4
+                height: parent.height
 
                 Rectangle {
-                    id: numberDisplayRect
+                    id: indexDisplayRect
                     height: parent.height
-                    width: 60
+                    width: 25
                     color: attendantsListRectangleColor
                     anchors.left: parent.left
+
                     Rectangle {
                         anchors.centerIn: parent
-                        height: numberText.font.pixelSize + 10
-                        width: numberText.font.pixelSize + 10
+                        height: 22
+                        width: 22
                         color: "transparent"
-                        border.width: 2
+                        border.width: 1
                         border.color: "#cccccc"
                         Text {
                             id: numberText
                             anchors.centerIn: parent
-                            font.pixelSize: 18
+                            font.pixelSize: attendantsListFontSize - 2
                             color: "#f3f3f4"
-                            text: (index + 1).toString()
-                            wrapMode: Text.WordWrap
+                            text: String(model.index + 1)
                         }
                     }
                 }
 
                 Rectangle {
-                    id: attendantProfilePicDisplayRect
-                    height: parent.height
-                    width: Math.round(attendantsListRectangleWidth / 1.4)
-                    color: attendantsListRectangleColor
-                    anchors.left: numberDisplayRect.right
-                    Image {
-                        id: attendantProfilePic
-                        anchors.centerIn: parent
-                        source: profilePicSource
-                        width: 70
-                        height: 70
-                        property bool rounded: true
-
-                        layer.enabled: rounded
-                        layer.effect: OpacityMask {
-
-                            property bool adapt: false
-                            maskSource: Item {
-                                width: attendantProfilePic.width
-                                height: attendantProfilePic.height
-                                Rectangle {
-                                    anchors.centerIn: parent
-                                    width: adapt ? attendantProfilePic.width : Math.min(attendantProfilePic.width, attendantProfilePic.height)
-                                    height: adapt ? attendantProfilePic.height : width
-                                    radius: Math.min(width, height)
-                                }
-                            }
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: attendantProfilePic
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: notYet.open()
-                    }
-                }
-
-                Rectangle {
-                    id: attendantNameDisplayRect
+                    id: nameDisplayRect
                     height: parent.height
                     width: attendantsListRectangleWidth
                     color: attendantsListRectangleColor
-                    anchors.left: attendantProfilePicDisplayRect.right
-                    anchors.leftMargin: 10
+                    anchors.left: indexDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: 16
+                        font.pixelSize: attendantsListFontSize
                         color: "#f3f3f4"
-                        text: name
-                        width: parent.width - 20
+                        text: Js.capitalizeAny(name, ' ')
+                        width: parent.width - 10
                         wrapMode: Text.WordWrap
                     }
                 }
@@ -197,69 +187,179 @@ Pane {
                 Rectangle {
                     id: genderDisplayRect
                     height: parent.height
-                    width: Math.round(attendantsListRectangleWidth / 1.4)
+                    width: Math.round(attendantsListRectangleWidth / 1.5)
                     color: attendantsListRectangleColor
-                    anchors.left: attendantNameDisplayRect.right
-                    anchors.leftMargin: 10
+                    anchors.left: nameDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: 16
+                        font.pixelSize: attendantsListFontSize
                         color: "#f3f3f4"
-                        text: gender
-                        width: parent.width - 20
+                        text: Js.capitalize(gender)
+                        width: parent.width - 10
                         wrapMode: Text.WordWrap
                     }
                 }
 
                 Rectangle {
-                    id: doeDisplayRect
+                    id: phoneDisplayRect
                     height: parent.height
                     width: attendantsListRectangleWidth
                     color: attendantsListRectangleColor
                     anchors.left: genderDisplayRect.right
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: attendantsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: 16
+                        font.pixelSize: attendantsListFontSize
                         color: "#f3f3f4"
-                        text: doe
-                        width: parent.width - 15
+                        text: phone
+                        width: parent.width - 10
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Rectangle {
+                    id: emailDisplayRect
+                    height: parent.height
+                    width: attendantsListRectangleWidth + 30
+                    color: attendantsListRectangleColor
+                    anchors.left: phoneDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: attendantsListFontSize
+                        color: "#f3f3f4"
+                        text: email
+                        width: parent.width - 10
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Rectangle {
+                    id: usernameDisplayRect
+                    height: parent.height
+                    width: attendantsListRectangleWidth
+                    color: attendantsListRectangleColor
+                    anchors.left: emailDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: attendantsListFontSize
+                        color: "#f3f3f4"
+                        text: username
+                        width: parent.width - 10
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Rectangle {
+                    id: regDateDisplayRect
+                    height: parent.height
+                    width: attendantsListRectangleWidth + 50
+                    color: attendantsListRectangleColor
+                    anchors.left: usernameDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: attendantsListFontSize
+                        color: "#f3f3f4"
+                        text: registered_date
+                        width: parent.width - 10
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Rectangle {
+                    id: susDateDisplayRect
+                    height: parent.height
+                    width: attendantsListRectangleWidth + 50
+                    color: attendantsListRectangleColor
+                    anchors.left: regDateDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
+                    visible: showSuspended
+
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: attendantsListFontSize
+                        color: "#f3f3f4"
+                        text: suspended_date
+                        width: parent.width - 10
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                Rectangle {
+                    id: deregDateDisplayRect
+                    height: parent.height
+                    width: attendantsListRectangleWidth + 50
+                    color: attendantsListRectangleColor
+                    anchors.left: regDateDisplayRect.right
+                    anchors.leftMargin: attendantsListRectLeftMargin
+                    visible: showDeregistered
+
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: attendantsListFontSize
+                        color: "#f3f3f4"
+                        text: deregistered_date
+                        width: parent.width - 10
                         wrapMode: Text.WordWrap
                     }
                 }
 
                 RowLayout {
-                    id: actionsDisplayRow
+                    id: actionDisplayLayout
                     height: parent.height
-                    width: Math.round(attendantsListRectangleWidth * 1.5)
-                    anchors.left: doeDisplayRect.right
-                    anchors.leftMargin: 10
-
-                    Button {
-                        id: detailsButton
-                        anchors.left: parent.left
-                        anchors.leftMargin: 5
-                        text: "Details"
-                        onClicked: notYet.open()
+                    width: attendantsListRectangleWidth * 2.2
+                    anchors.left: {
+                        if (susDateDisplayRect.visible)
+                            return susDateDisplayRect.right
+                        else if (deregDateDisplayRect.visible)
+                            return deregDateDisplayRect.right
+                        else
+                            return regDateDisplayRect.right
                     }
 
+                    anchors.leftMargin: attendantsListRectLeftMargin
                     Button {
-                        id: suspendButton
-                        anchors.left: detailsButton.right
-                        anchors.leftMargin: 10
-                        text: "Suspend"
-                        onClicked: notYet.open()
+                        anchors.verticalCenter: parent.verticalCenter
+                        enabled: (status !== "deleted")
+                        text: "edit"
                     }
-
                     Button {
-                        id: dismissButton
-                        anchors.left: suspendButton.right
-                        anchors.leftMargin: 10
-                        text: "Dismiss"
-                        onClicked: notYet.open()
+                        id: activateOrSuspendButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        enabled: (status !== "deleted")
+                        text: (status === "suspended") ? "activate" : "suspend"
+                        onClicked: {
+                            if (activateOrSuspendButton.text === "suspend")
+                            {
+                                accountSuspensionDialog.role = "attendant"
+                                accountSuspensionDialog.name = Js.capitalizeAny(name, ' ')
+                                accountSuspensionDialog.username = username
+                                accountSuspensionDialog.open()
+                            }
+                            else
+                            {
+                                accountActivationDialog.role = "attendant"
+                                accountActivationDialog.name = Js.capitalizeAny(name, ' ')
+                                accountActivationDialog.username = username
+                                accountActivationDialog.open()
+                            }
+                        }
+                    }
+                    Button {
+                        anchors.verticalCenter: parent.verticalCenter
+                        enabled: (status !== "deleted")
+                        text: "delete"
+                        onClicked: {
+                            accountDeletionDialog.role = "attendant"
+                            accountDeletionDialog.name = Js.capitalizeAny(name, ' ')
+                            accountDeletionDialog.username = username
+                            accountDeletionDialog.open()
+                        }
                     }
                 }
-
 
             }
 
@@ -272,6 +372,30 @@ Pane {
                 color: "#bfbfbf"
                 opacity: 0.5
             }
+        }
+    }
+
+    AccountActivation {
+        id: accountActivationDialog
+        onClosed: {
+            // re-initialize model and run filter for current status
+            personnelModelAttendants.filter(PersonnelModel.Attendant, statusComboBox.currentText.toLowerCase())
+        }
+    }
+
+    AccountSuspension {
+        id: accountSuspensionDialog
+        onClosed: {
+            // re-initialize model and run filter for current status
+            personnelModelAttendants.filter(PersonnelModel.Attendant, statusComboBox.currentText.toLowerCase())
+        }
+    }
+
+    AccountDeletion {
+        id: accountDeletionDialog
+        onClosed: {
+            // re-initialize model and run filter for current status
+            personnelModelAttendants.filter(PersonnelModel.Attendant, statusComboBox.currentText.toLowerCase())
         }
     }
 }

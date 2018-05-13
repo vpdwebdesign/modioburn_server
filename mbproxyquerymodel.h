@@ -1,34 +1,36 @@
 #ifndef MBPROXYQUERYMODEL_H
 #define MBPROXYQUERYMODEL_H
 
-#include "mbquerymodel.h"
+#include <QSortFilterProxyModel>
 
-class QSortFilterProxyModel;
+#include "mbquerymodel.h"
 
 class MbProxyQueryModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QSortFilterProxyModel *moviesModel READ moviesModel)
-    Q_PROPERTY(QSortFilterProxyModel *seriesModel READ seriesModel)
-    Q_PROPERTY(QSortFilterProxyModel *episodesModel READ episodesModel)
-    Q_PROPERTY(QSortFilterProxyModel *musicModel READ musicModel)
-    Q_PROPERTY(QSortFilterProxyModel *gamesModel READ gamesModel)
+    Q_PROPERTY(QSortFilterProxyModel *moviesModel READ moviesModel NOTIFY moviesModelChanged)
+    Q_PROPERTY(QSortFilterProxyModel *seriesModel READ seriesModel NOTIFY seriesModelChanged)
+    Q_PROPERTY(QSortFilterProxyModel *episodesModel READ episodesModel NOTIFY episodesModelChanged)
+    Q_PROPERTY(QSortFilterProxyModel *musicModel READ musicModel NOTIFY musicModelChanged)
+    Q_PROPERTY(QSortFilterProxyModel *gamesModel READ gamesModel NOTIFY gamesModelChanged)
 
-    Q_PROPERTY(MbQueryModel *itemPricesModel READ itemPricesModel)
-    Q_PROPERTY(MbQueryModel *itemTypesModel READ itemTypesModel)
-    Q_PROPERTY(MbQueryModel *copyMediaModel READ copyMediaModel)
-    Q_PROPERTY(MbQueryModel *musicCopyMediaModel READ musicCopyMediaModel)
-    Q_PROPERTY(MbQueryModel *paymentMethodsModel READ paymentMethodsModel)
+    Q_PROPERTY(MbQueryModel *itemPricesModel READ itemPricesModel NOTIFY itemPricesModelChanged)
+    Q_PROPERTY(MbQueryModel *itemTypesModel READ itemTypesModel NOTIFY itemTypesModelChanged)
+    Q_PROPERTY(MbQueryModel *copyMediaModel READ copyMediaModel NOTIFY copyMediaModelChanged)
+    Q_PROPERTY(MbQueryModel *musicCopyMediaModel READ musicCopyMediaModel NOTIFY musicCopyMediaModelChanged)
+    Q_PROPERTY(MbQueryModel *paymentMethodsModel READ paymentMethodsModel NOTIFY paymentMethodsModelChanged)
 
-    Q_PROPERTY(MbQueryModel *stockItemCategoriesModel READ stockItemCategoriesModel)
-    Q_PROPERTY(MbQueryModel *stockItemNamesModel READ stockItemNamesModel)
-    Q_PROPERTY(MbQueryModel *stockItemSizesModel READ stockItemSizesModel)
+    Q_PROPERTY(MbQueryModel *stockItemCategoriesModel READ stockItemCategoriesModel NOTIFY stockItemCategoriesModelChanged)
+    Q_PROPERTY(MbQueryModel *stockItemNamesModel READ stockItemNamesModel NOTIFY stockItemNamesModelChanged)
+    Q_PROPERTY(MbQueryModel *stockItemSizesModel READ stockItemSizesModel NOTIFY stockItemSizesModelChanged)
 
     Q_PROPERTY(QString seriesTitle READ seriesTitle WRITE setSeriesTitle NOTIFY seriesTitleChanged)
     Q_PROPERTY(QString season READ season WRITE setSeason NOTIFY seasonChanged)
 
 public:
+    explicit MbProxyQueryModel(QObject *parent = nullptr);
+
     enum ModelType {
         Movies,
         Series,
@@ -36,8 +38,6 @@ public:
         Games
     };
     Q_ENUMS(ModelType)
-
-    explicit MbProxyQueryModel(QObject *parent = nullptr);
 
     QSortFilterProxyModel *moviesModel() const;
     QSortFilterProxyModel *seriesModel() const;
@@ -63,6 +63,22 @@ public:
     void setSeason(const QString &season);
 
 signals:
+    void moviesModelChanged();
+    void seriesModelChanged();
+    void episodesModelChanged();
+    void musicModelChanged();
+    void gamesModelChanged();
+
+    void itemTypesModelChanged();
+    void itemPricesModelChanged();
+    void copyMediaModelChanged();
+    void musicCopyMediaModelChanged();
+    void paymentMethodsModelChanged();
+
+    void stockItemCategoriesModelChanged();
+    void stockItemNamesModelChanged();
+    void stockItemSizesModelChanged();
+
     void seriesTitleChanged(const QString &seriesTitle);
     void seasonChanged(const QString &season);
 

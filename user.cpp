@@ -330,6 +330,7 @@ bool User::addUser() // a.k.a registerUser()
         return false;
     }
 
+    emit userAdded();
     return true;
 
 }
@@ -341,11 +342,27 @@ bool User::updateUser()
     QSqlDatabase::database().transaction();
 
     QSqlQuery firstQ;
-    firstQ.prepare(QLatin1String("UPDATE users "
-                                 "SET phone = :phone, email = :email "
+    if (m_status == "suspended")
+    {
+        firstQ.prepare(QLatin1String("UPDATE users "
+                                 "SET phone = :phone, email = :email, status = :status, suspended_date = localtimestamp "
                                  "WHERE id = :userId"));
+    }
+    else if (m_status == "deleted")
+    {
+        firstQ.prepare(QLatin1String("UPDATE users "
+                                 "SET phone = :phone, email = :email, status = :status, deregistered_date = localtimestamp "
+                                 "WHERE id = :userId"));
+    }
+    else
+    {
+        firstQ.prepare(QLatin1String("UPDATE users "
+                                 "SET phone = :phone, email = :email, status = :status "
+                                 "WHERE id = :userId"));
+    }
     firstQ.bindValue(":phone", m_phone);
     firstQ.bindValue(":email", m_email);
+    firstQ.bindValue(":status", m_status);
     firstQ.bindValue(":userId", m_userId);
 
     if (firstQ.exec())
@@ -383,6 +400,7 @@ bool User::updateUser()
         return false;
     }
 
+    emit userUpdated();
     return true;
 }
 
@@ -464,6 +482,7 @@ bool User::deleteUser(const QString &username)
     if (q.exec())
     {
         qDebug() << "User:" << username << "deleted successfully";
+        emit userDeleted();
         return true;
     }
     else
@@ -526,6 +545,7 @@ bool User::resetPassword(const QString &username, const QString &pass)
     if (q.exec())
     {
         qDebug() << "Password reset successful.";
+        emit passwordReset();
         return true;
     }
     else

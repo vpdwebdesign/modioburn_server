@@ -16,7 +16,6 @@ Pane {
     property int transactionsRectLeftMargin: 5
     property string transactionsRectangleColor: "transparent"
     property real transactionsRectangleOpacity: 1.0
-    property int transactionsCostTimeRectangleWidth: Math.round(transactionsRectangleWidth / 1.4)
     property int transactionsFontSize: 13
 
     // For use in displaying transaction details

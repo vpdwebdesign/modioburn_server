@@ -1,4 +1,3 @@
-#include <QSortFilterProxyModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>

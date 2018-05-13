@@ -145,7 +145,6 @@
         <file>Common/SortBarPersons.qml</file>
         <file>Common/SortBarStations.qml</file>
         <file>Common/SortBarTransactions.qml</file>
-        <file>Common/SortPersons.qml</file>
         <file>Common/SortReportType.qml</file>
         <file>Common/WeeklySalesReportControl.qml</file>
         <file>Common/YearlySalesReportControl.qml</file>
@@ -159,11 +158,8 @@
         <file>OfficialsLogin.qml</file>
         <file>SalesReport.qml</file>
         <file>Sell.qml</file>
-        <file>stock.xml</file>
         <file>Subscriptions.qml</file>
         <file>SuperAdministratorHome.qml</file>
-        <file>transactiondetails.xml</file>
-        <file>transactions.xml</file>
         <file>Transactions.qml</file>
         <file>assets/icons/sort_down_dark.png</file>
         <file>assets/icons/sort_down_light.png</file>
@@ -171,5 +167,12 @@
         <file>assets/icons/sort_up_light.png</file>
         <file>assets/icons/search_light.png</file>
         <file>Common/FilterTransactions.qml</file>
+        <file>ManageCustomers.qml</file>
+        <file>ManageAdmin.qml</file>
+        <file>PersonnelRegistration.qml</file>
+        <file>Common/Dialogs/AccountSuspension.qml</file>
+        <file>Common/Dialogs/AccountDeletion.qml</file>
+        <file>Common/Dialogs/AccountActivation.qml</file>
+        <file>EditPersonnel.qml</file>
     </qresource>
 </RCC>

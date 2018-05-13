@@ -52,24 +52,6 @@ Pane {
                 }
             }
 
-//            Image {
-//                id: usersIcon
-//                anchors.left: transactionsIcon.right
-//                anchors.leftMargin: iconSpacing
-//                anchors.verticalCenter: parent.verticalCenter
-//                source: "qrc:/assets/icons/users.png"
-
-
-//                MouseArea {
-//                    anchors.fill: usersIcon
-//                    hoverEnabled: true
-//                    cursorShape: Qt.PointingHandCursor
-//                    onEntered: usersIconRectangle.opacity = 1.0
-//                    onExited: usersIconRectangle.opacity = 0.0
-//                    onClicked: notYet.open()
-//                }
-//            }
-
             Image {
                 id: shopIcon
                 anchors.left: transactionsIcon.right
@@ -86,6 +68,24 @@ Pane {
                     onClicked: {
                         mainView.push("Sell.qml")
                     }
+                }
+            }
+
+            Image {
+                id: usersIcon
+                anchors.left: shopIcon.right
+                anchors.leftMargin: iconSpacing
+                anchors.verticalCenter: parent.verticalCenter
+                source: "qrc:/assets/icons/users.png"
+
+
+                MouseArea {
+                    anchors.fill: usersIcon
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onEntered: usersIconRectangle.opacity = 1.0
+                    onExited: usersIconRectangle.opacity = 0.0
+                    onClicked: mainView.push("ManageCustomers.qml")
                 }
             }
         }
@@ -122,25 +122,6 @@ Pane {
                 }
             }
 
-//            Rectangle {
-//                id: usersIconRectangle
-//                anchors.bottom: parent.bottom
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                width: parent.width / 2
-//                height: 70
-//                color: "transparent"
-//                border.color: "#e0e0e0"
-//                opacity: 0.0
-
-//                Text {
-//                    anchors.verticalCenter: parent.verticalCenter
-//                    anchors.horizontalCenter: parent.horizontalCenter
-//                    color: "#f3f3f4"
-//                    text: "Users"
-//                    font.pixelSize: 25
-//                }
-//            }
-
             Rectangle {
                 id: shopIconRectangle
                 anchors.bottom: parent.bottom
@@ -156,6 +137,25 @@ Pane {
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: "#f3f3f4"
                     text: "Sell Shop Items"
+                    font.pixelSize: 25
+                }
+            }
+
+            Rectangle {
+                id: usersIconRectangle
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width / 2
+                height: 70
+                color: "transparent"
+                border.color: "#e0e0e0"
+                opacity: 0.0
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: "#f3f3f4"
+                    text: "Users"
                     font.pixelSize: 25
                 }
             }

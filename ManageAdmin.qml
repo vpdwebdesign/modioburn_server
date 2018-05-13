@@ -10,21 +10,21 @@ import "Common/JS/functions.js" as Js
 
 Pane {
 
-    property string pageTitle: "Manage Managers"
+    property string pageTitle: "Manage Administrators"
 
     property int delegateHeight: 70
-    property int managersListRectangleWidth: 120
-    property int managersListRectangleHeight: delegateHeight
-    property int managersListRectLeftMargin: 5
-    property string managersListRectangleColor: "transparent"
-    property real managersListRectangleOpacity: 1.0
-    property int managersListFontSize: 13
+    property int administratorsListRectangleWidth: 120
+    property int administratorsListRectangleHeight: delegateHeight
+    property int administratorsListRectLeftMargin: 5
+    property string administratorsListRectangleColor: "transparent"
+    property real administratorsListRectangleOpacity: 1.0
+    property int administratorsListFontSize: 13
 
     property bool showSuspended: false
     property bool showDeregistered: false
 
     PersonnelModel {
-        id: personnelModelManagers
+        id: personnelModelAdministrators
     }
 
     RowLayout {
@@ -37,22 +37,22 @@ Pane {
             anchors.left: parent.left
             text: "Add"
             onClicked: {
-                mainView.push("PersonnelRegistration.qml", {"newRole" : "manager"})
+                mainView.push("PersonnelRegistration.qml", {"newRole" : "administrator"})
             }
 
             ToolTip {
                 visible: parent.hovered
-                text: "Add Manager"
+                text: "Add Administrator"
             }
         }
 
         SearchBar {
             id: search
             Layout.fillWidth: true
-            placeHolder: qsTr("Manager name, phone, status")
+            placeHolder: qsTr("Administrator name, phone, status")
             fuzzySearchEnabled: true
             onSearchActivated: {
-               personnelModelManagers.filter(PersonnelModel.Manager, searchString)
+               personnelModelAdministrators.filter(PersonnelModel.Administrator, searchString)
             }
 
         }
@@ -94,7 +94,7 @@ Pane {
                         sortBarPersons.showDeregistered = showDeregistered
                     }
 
-                    personnelModelManagers.filter(PersonnelModel.Manager, statusComboBox.currentText.toLowerCase())
+                    personnelModelAdministrators.filter(PersonnelModel.Administrator, statusComboBox.currentText.toLowerCase())
                 }
             }
         }
@@ -108,38 +108,38 @@ Pane {
         SortBarPersons {
             id: sortBarPersons
             onSortActivated: {
-                personnelModelManagers.sort(PersonnelModel.Manager, col, sortOrder)
+                personnelModelAdministrators.sort(PersonnelModel.Administrator, col, sortOrder)
             }
         }
 
     }
 
     ListView {
-        id: managersListView
+        id: administratorsListView
         clip: true
         anchors.top: sortBarRow.bottom
         anchors.topMargin: 20
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        model: personnelModelManagers.managersModel
-        delegate: managersListDelegate
+        model: personnelModelAdministrators.administratorsModel
+        delegate: administratorsListDelegate
         ScrollBar.vertical: ScrollBar {}
 
         Component.onCompleted: {
-            personnelModelManagers.filter(PersonnelModel.Manager, statusComboBox.currentText.toLowerCase())
+            personnelModelAdministrators.filter(PersonnelModel.Administrator, statusComboBox.currentText.toLowerCase())
         }
     }
 
     Component {
-        id: managersListDelegate
+        id: administratorsListDelegate
 
         Item {
             width: parent.width
             height: delegateHeight
 
             RowLayout {
-                id: managersListDataRow
+                id: administratorsListDataRow
                 width: parent.width
                 height: parent.height
 
@@ -147,7 +147,7 @@ Pane {
                     id: indexDisplayRect
                     height: parent.height
                     width: 25
-                    color: managersListRectangleColor
+                    color: administratorsListRectangleColor
                     anchors.left: parent.left
 
                     Rectangle {
@@ -160,7 +160,7 @@ Pane {
                         Text {
                             id: numberText
                             anchors.centerIn: parent
-                            font.pixelSize: managersListFontSize - 2
+                            font.pixelSize: administratorsListFontSize - 2
                             color: "#f3f3f4"
                             text: String(model.index + 1)
                         }
@@ -170,13 +170,13 @@ Pane {
                 Rectangle {
                     id: nameDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth
+                    color: administratorsListRectangleColor
                     anchors.left: indexDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: Js.capitalizeAny(name, ' ')
                         width: parent.width - 10
@@ -187,13 +187,13 @@ Pane {
                 Rectangle {
                     id: genderDisplayRect
                     height: parent.height
-                    width: Math.round(managersListRectangleWidth / 1.5)
-                    color: managersListRectangleColor
+                    width: Math.round(administratorsListRectangleWidth / 1.5)
+                    color: administratorsListRectangleColor
                     anchors.left: nameDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: Js.capitalize(gender)
                         width: parent.width - 10
@@ -204,13 +204,13 @@ Pane {
                 Rectangle {
                     id: phoneDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth
+                    color: administratorsListRectangleColor
                     anchors.left: genderDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: phone
                         width: parent.width - 10
@@ -221,13 +221,13 @@ Pane {
                 Rectangle {
                     id: emailDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth + 30
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth + 30
+                    color: administratorsListRectangleColor
                     anchors.left: phoneDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: email
                         width: parent.width - 10
@@ -238,13 +238,13 @@ Pane {
                 Rectangle {
                     id: usernameDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth
+                    color: administratorsListRectangleColor
                     anchors.left: emailDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: username
                         width: parent.width - 10
@@ -255,13 +255,13 @@ Pane {
                 Rectangle {
                     id: regDateDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth + 50
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth + 50
+                    color: administratorsListRectangleColor
                     anchors.left: usernameDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: registered_date
                         width: parent.width - 10
@@ -272,15 +272,15 @@ Pane {
                 Rectangle {
                     id: susDateDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth + 50
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth + 50
+                    color: administratorsListRectangleColor
                     anchors.left: regDateDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     visible: showSuspended
 
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: suspended_date
                         width: parent.width - 10
@@ -291,15 +291,15 @@ Pane {
                 Rectangle {
                     id: deregDateDisplayRect
                     height: parent.height
-                    width: managersListRectangleWidth + 50
-                    color: managersListRectangleColor
+                    width: administratorsListRectangleWidth + 50
+                    color: administratorsListRectangleColor
                     anchors.left: regDateDisplayRect.right
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     visible: showDeregistered
 
                     Text {
                         anchors.centerIn: parent
-                        font.pixelSize: managersListFontSize
+                        font.pixelSize: administratorsListFontSize
                         color: "#f3f3f4"
                         text: deregistered_date
                         width: parent.width - 10
@@ -310,7 +310,7 @@ Pane {
                 RowLayout {
                     id: actionDisplayLayout
                     height: parent.height
-                    width: managersListRectangleWidth * 2.2
+                    width: administratorsListRectangleWidth * 2.2
                     anchors.left: {
                         if (susDateDisplayRect.visible)
                             return susDateDisplayRect.right
@@ -320,7 +320,7 @@ Pane {
                             return regDateDisplayRect.right
                     }
 
-                    anchors.leftMargin: managersListRectLeftMargin
+                    anchors.leftMargin: administratorsListRectLeftMargin
                     Button {
                         anchors.verticalCenter: parent.verticalCenter
                         enabled: (status !== "deleted")
@@ -334,14 +334,14 @@ Pane {
                         onClicked: {
                             if (activateOrSuspendButton.text === "suspend")
                             {
-                                accountSuspensionDialog.role = "manager"
+                                accountSuspensionDialog.role = "administrator"
                                 accountSuspensionDialog.name = Js.capitalizeAny(name, ' ')
                                 accountSuspensionDialog.username = username
                                 accountSuspensionDialog.open()
                             }
                             else
                             {
-                                accountActivationDialog.role = "manager"
+                                accountActivationDialog.role = "administrator"
                                 accountActivationDialog.name = Js.capitalizeAny(name, ' ')
                                 accountActivationDialog.username = username
                                 accountActivationDialog.open()
@@ -353,7 +353,7 @@ Pane {
                         enabled: (status !== "deleted")
                         text: "delete"
                         onClicked: {
-                            accountDeletionDialog.role = "manager"
+                            accountDeletionDialog.role = "administrator"
                             accountDeletionDialog.name = Js.capitalizeAny(name, ' ')
                             accountDeletionDialog.username = username
                             accountDeletionDialog.open()
@@ -379,7 +379,7 @@ Pane {
         id: accountActivationDialog
         onClosed: {
             // re-initialize model and run filter for current status
-            personnelModelManagers.filter(PersonnelModel.Manager, statusComboBox.currentText.toLowerCase())
+            personnelModelAdministrators.filter(PersonnelModel.Administrator, statusComboBox.currentText.toLowerCase())
         }
     }
 
@@ -387,7 +387,7 @@ Pane {
         id: accountSuspensionDialog
         onClosed: {
             // re-initialize model and run filter for current status
-            personnelModelManagers.filter(PersonnelModel.Manager, statusComboBox.currentText.toLowerCase())
+            personnelModelAdministrators.filter(PersonnelModel.Administrator, statusComboBox.currentText.toLowerCase())
         }
     }
 
@@ -395,7 +395,7 @@ Pane {
         id: accountDeletionDialog
         onClosed: {
             // re-initialize model and run filter for current status
-            personnelModelManagers.filter(PersonnelModel.Manager, statusComboBox.currentText.toLowerCase())
+            personnelModelAdministrators.filter(PersonnelModel.Administrator, statusComboBox.currentText.toLowerCase())
         }
     }
 }
